@@ -19,6 +19,6 @@ module Fog
 
     service(:compute, 'Compute')
 
-    AC_API_URL = 'https://api.dc1.computing.cloud.it/WsEndUser/v2.9/WsEndUser.svc/json'
+
   end
 end
