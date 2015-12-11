@@ -23,6 +23,7 @@ module Fog
               :method => 'SetEnqueueServerStart',
               :body => Fog::JSON.encode(body)
           }
+          request(power_on_options)
         end
       end
     end

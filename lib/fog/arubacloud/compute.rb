@@ -20,7 +20,9 @@ module Fog
       # Requests
       request_path 'fog/arubacloud/requests/compute'
       request :power_on_vm
+      request :power_off_vm
       request :get_servers
+      request :get_server_details
 
 
       # Mock class to run a fake instance of the Service with no real connections.
@@ -29,19 +31,6 @@ module Fog
           @arubacloud_username = options[:arubacloud_username] || ''
           @arubacloud_password = options[:arubacloud_password] || ''
           @ws_enduser_url = options[:url] || Fog::ArubaCloud::DEFAULT_WS_ENDUSER_URL
-        end
-
-        def send_request(options)
-          body = options[:body] || {}
-          status = options[:status] || 200
-          headers = options[:headers] || content
-
-          response = Excon::Response.new(:body => body, :headers => headers, :status => status)
-          if options.key?(:expects) && ![*options[:expects]].include?(response.status)
-            raise(Excon::Errors.status_error(options, response))
-          else
-            response
-          end
         end
       end
 

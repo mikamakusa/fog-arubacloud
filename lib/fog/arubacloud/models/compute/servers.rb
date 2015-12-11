@@ -29,7 +29,8 @@ module Fog
         # @param [String] server_id for server to be returned.
         # @return [Fog::Compute::ArubaCloud::Server]
         def get(server_id)
-          data = service.get_server(server_id)
+          data = service.get_server_details(server_id)
+          load(data)
         end
 
       end

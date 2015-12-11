@@ -31,25 +31,22 @@ module Fog
           @service = attributes[:service]
         end
 
-        def public_ip_address
-          ipv4_address
-        end
-
         def ipv4_address
-          network
+          #TODO: Return the ipv4 address of the VM
         end
 
         def power_off
-
+          requires :id
+          service.power_off_vm(id)
         end
 
         def power_on
-
+          requires :id
+          service.power_on_vm(id)
         end
 
         def delete
           if state != STOPPED
-
           end
         end
 

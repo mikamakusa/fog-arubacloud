@@ -5,27 +5,25 @@
 # LICENSE: MIT (http://opensource.org/licenses/MIT)
 #
 
-require 'fog/arubacloud/service'
-
 module Fog
   module Compute
     class ArubaCloud
-      # noinspection RubyResolve
       class Real
-        def get_servers
+        def power_off_vm(id)
           body = {
-              :ApplicationId => 'GetServers',
-              :RequestId => 'GetServers',
-              :SessionId => 'GetServers',
+              :ApplicationId => 'SetEnqueueServerStop',
+              :RequestId => 'SetEnqueueServerStop',
+              :SessionId => 'SetEnqueueServerStop',
               :Username => @arubacloud_username,
-              :Password => @arubacloud_password
+              :Password => @arubacloud_password,
+              :ServerId => "#{id}"
           }
-          get_servers_options = {
+          power_off_options = {
               :http_method => :post,
-              :method => 'GetServers',
+              :method => 'SetEnqueueServerStop',
               :body => Fog::JSON.encode(body)
           }
-          request(get_servers_options)
+          request(power_off_options)
         end
       end
     end
