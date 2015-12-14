@@ -5,20 +5,18 @@
 # LICENSE: MIT (http://opensource.org/licenses/MIT)
 #
 
-require 'fog/arubacloud/service'
-
 module Fog
   module Compute
     class ArubaCloud
       class Real
-        def power_on_vm(id)
-          body = self.body('SetEnqueueServerStart').merge({:ServerId => "#{id}"})
-          power_on_options = {
+        def delete_vm(id)
+          body = self.body('SetEnqueueServerDeletion').merge({:ServerId => "#{id}"})
+          power_off_options = {
               :http_method => :post,
-              :method => 'SetEnqueueServerStart',
+              :method => 'SetEnqueueServerDeletion',
               :body => Fog::JSON.encode(body)
           }
-          request(power_on_options)
+          request(power_off_options)
         end
       end
     end

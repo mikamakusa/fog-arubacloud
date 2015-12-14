@@ -5,19 +5,14 @@
 # LICENSE: MIT (http://opensource.org/licenses/MIT)
 #
 
+require 'fog/arubacloud/service'
+
 module Fog
   module Compute
     class ArubaCloud
       class Real
         def power_off_vm(id)
-          body = {
-              :ApplicationId => 'SetEnqueueServerStop',
-              :RequestId => 'SetEnqueueServerStop',
-              :SessionId => 'SetEnqueueServerStop',
-              :Username => @arubacloud_username,
-              :Password => @arubacloud_password,
-              :ServerId => "#{id}"
-          }
+          body = self.body('SetEnqueueServerStop').merge({:ServerId => "#{id}"})
           power_off_options = {
               :http_method => :post,
               :method => 'SetEnqueueServerStop',

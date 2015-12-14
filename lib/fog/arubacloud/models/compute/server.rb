@@ -18,17 +18,21 @@ module Fog
         DELETED = 5
 
         # This is the instance ID which is unique per Datacenter
-        identity :id
+        identity :id, :aliases => 'ServerId'
 
-        attribute :name
-        attribute :state
-        attribute :memory
-        attribute :vcpus
-        attribute :disk
-        attribute :networks
+        attribute :name, :aliases => 'Name'
+        attribute :state, :aliases => 'ServerStatus'
+        attribute :memory, :aliases => 'RAMQuantity'
+        attribute :vcpu, :aliases => 'CPUQuantity'
+        attribute :hypervisor, :aliases => 'HypervisorType'
+        attribute :datacenter_id, :aliases => 'DatacenterId'
+        attribute :template_id, :aliases => 'OSTemplateId'
+        attribute :hd_qty, :aliases => 'HDQuantity'
+        attribute :hd_total_size, :aliases => 'HDTotalSize'
 
         def initialize(attributes = {})
           @service = attributes[:service]
+          super
         end
 
         def ipv4_address
@@ -46,8 +50,8 @@ module Fog
         end
 
         def delete
-          if state != STOPPED
-          end
+          requires :id
+          state == STOPPED ? service.delete_vm(id) : raise(Exception)
         end
 
       end

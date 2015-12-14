@@ -13,13 +13,7 @@ module Fog
       # noinspection RubyResolve
       class Real
         def get_servers
-          body = {
-              :ApplicationId => 'GetServers',
-              :RequestId => 'GetServers',
-              :SessionId => 'GetServers',
-              :Username => @arubacloud_username,
-              :Password => @arubacloud_password
-          }
+          body = self.body('GetServers')
           get_servers_options = {
               :http_method => :post,
               :method => 'GetServers',

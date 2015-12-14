@@ -13,14 +13,7 @@ module Fog
       # noinspection RubyResolve
       class Real
         def get_server_details(server_id)
-          body = {
-              :ApplicationId => 'GetServerDetails',
-              :RequestId => 'GetServerDetails',
-              :SessionId => 'GetServerDetails',
-              :Username => @arubacloud_username,
-              :Password => @arubacloud_password,
-              :ServerId => server_id
-          }
+          body = self.body('GetServerDetails').merge({:ServerId => server_id})
           get_server_detail_options = {
               :http_method => :post,
               :method => 'GetServerDetails',
@@ -30,7 +23,6 @@ module Fog
         end
 
         class Mock
-          raise Not
         end
       end
     end

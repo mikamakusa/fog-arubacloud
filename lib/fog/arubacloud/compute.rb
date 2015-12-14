@@ -23,7 +23,8 @@ module Fog
       request :power_off_vm
       request :get_servers
       request :get_server_details
-
+      request :delete_vm
+      request :create_pro_vm
 
       # Mock class to run a fake instance of the Service with no real connections.
       class Mock < Fog::ArubaCloud::Service
@@ -39,6 +40,16 @@ module Fog
           @arubacloud_username = options[:arubacloud_username] || ''
           @arubacloud_password = options[:arubacloud_password] || ''
           @ws_enduser_url = options[:url] || Fog::ArubaCloud::DEFAULT_WS_ENDUSER_URL
+        end
+
+        def body(method)
+          {
+              :ApplicationIs => method,
+              :RequestId => method,
+              :Sessionid => method,
+              :Username => @arubacloud_username,
+              :Password => @arubacloud_password
+          }
         end
       end
 
