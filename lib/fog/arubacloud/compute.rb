@@ -16,6 +16,8 @@ module Fog
       model_path 'fog/arubacloud/models/compute'
       collection :servers
       model      :server
+      collection :ips
+      model      :ip
 
       # Requests
       request_path 'fog/arubacloud/requests/compute'
@@ -24,7 +26,10 @@ module Fog
       request :get_servers
       request :get_server_details
       request :delete_vm
-      request :create_pro_vm
+      request :create_vm
+      request :purchase_ip
+      request :remove_ip
+      request :get_purchased_ip_addresses
 
       # Mock class to run a fake instance of the Service with no real connections.
       class Mock < Fog::ArubaCloud::Service

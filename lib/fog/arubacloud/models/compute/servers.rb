@@ -31,7 +31,7 @@ module Fog
         # @return [Fog::Compute::ArubaCloud::Server]
         def get(server_id)
           data = service.get_server_details(server_id)
-          object = data["Value"]
+          objects = data["Value"]
           load(objects)
         end
 

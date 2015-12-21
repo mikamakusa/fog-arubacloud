@@ -11,12 +11,12 @@ module Fog
       class Real
         def delete_vm(id)
           body = self.body('SetEnqueueServerDeletion').merge({:ServerId => "#{id}"})
-          power_off_options = {
+          delete_vm_options = {
               :http_method => :post,
               :method => 'SetEnqueueServerDeletion',
               :body => Fog::JSON.encode(body)
           }
-          request(power_off_options)
+          request(delete_vm_options)
         end
       end
     end

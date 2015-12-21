@@ -23,30 +23,43 @@ module Fog
         attribute :name, :aliases => 'Name'
         attribute :state, :aliases => 'ServerStatus'
         attribute :memory, :aliases => 'RAMQuantity'
-        attribute :vcpu, :aliases => 'CPUQuantity'
+        attribute :cpu, :aliases => 'CPUQuantity', :type => :string
         attribute :hypervisor, :aliases => 'HypervisorType'
         attribute :datacenter_id, :aliases => 'DatacenterId'
         attribute :template_id, :aliases => 'OSTemplateId'
         attribute :hd_qty, :aliases => 'HDQuantity'
         attribute :hd_total_size, :aliases => 'HDTotalSize'
+        attribute :admin_password
 
         def initialize(attributes = {})
           @service = attributes[:service]
           super
         end
 
-        def ipv4_address
-          #TODO: Return the ipv4 address of the VM
+        def create
+          requires :name, :cpu, :memory, :admin_password, :hypervisor
+          data = attributes
+
+          response = service.create_vm(data)
+          new_attributes = response[:Value]
+          merge_attributes(new_attributes)
+        end
+
+        def get_server_details
+          requires :id
+          response = service.get_server_details(id)
+          new_attributes = response['Value']
+          merge_attributes(new_attributes)
         end
 
         def power_off
           requires :id
-          service.power_off_vm(id)
+          @service.power_off_vm(id)
         end
 
         def power_on
           requires :id
-          service.power_on_vm(id)
+          @service.power_on_vm(id)
         end
 
         def delete

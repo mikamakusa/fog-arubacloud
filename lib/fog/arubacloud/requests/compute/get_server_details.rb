@@ -6,12 +6,16 @@
 #
 
 require 'fog/arubacloud/service'
+require 'fog/arubacloud/error'
+require 'benchmark'
 
 module Fog
   module Compute
     class ArubaCloud
       # noinspection RubyResolve
       class Real
+        # Return the server details
+        # @return [Ex]
         def get_server_details(server_id)
           body = self.body('GetServerDetails').merge({:ServerId => server_id})
           get_server_detail_options = {
@@ -19,7 +23,16 @@ module Fog
               :method => 'GetServerDetails',
               :body => Fog::JSON.encode(body)
           }
-          request(get_server_detail_options)
+          response = nil
+          time = Benchmark.realtime {
+            response = request(get_server_detail_options)
+          }
+          puts "GetServerDetails time: #{time}"
+          if response['Success']
+            response
+          else
+            raise Fog::ArubaCloud::Errors::NotFound
+          end
         end
 
         class Mock

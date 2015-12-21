@@ -14,18 +14,18 @@ module Fog
     class ArubaCloud
       # noinspection RubyResolve
       class Real
-        def get_servers
-          body = self.body('GetServers')
+        def get_purchased_ip_addresses
+          body = self.body('GetPurchasedIpAddresses')
           get_servers_options = {
               :http_method => :post,
-              :method => 'GetServers',
+              :method => 'GetPurchasedIpAddresses',
               :body => Fog::JSON.encode(body)
           }
           response = nil
           time = Benchmark.realtime {
             response = request(get_servers_options)
           }
-          puts "GetServer time: #{time}"
+          puts "GetPurchasedIpAddresses time: #{time}"
           if response['Success']
             response
           else

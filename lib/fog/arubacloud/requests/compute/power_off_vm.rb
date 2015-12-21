@@ -13,12 +13,21 @@ module Fog
       class Real
         def power_off_vm(id)
           body = self.body('SetEnqueueServerStop').merge({:ServerId => "#{id}"})
-          power_off_options = {
+          options = {
               :http_method => :post,
               :method => 'SetEnqueueServerStop',
               :body => Fog::JSON.encode(body)
           }
-          request(power_off_options)
+          response = nil
+          time = Benchmark.realtime {
+            response = request(options)
+          }
+          puts "SetEnqueueServerStop time: #{time}"
+          if response['Success']
+            response
+          else
+            raise Fog::ArubaCloud::Error::RequestError
+          end
         end
       end
     end

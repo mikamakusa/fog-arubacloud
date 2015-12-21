@@ -13,12 +13,21 @@ module Fog
       class Real
         def power_on_vm(id)
           body = self.body('SetEnqueueServerStart').merge({:ServerId => "#{id}"})
-          power_on_options = {
+          options = {
               :http_method => :post,
               :method => 'SetEnqueueServerStart',
               :body => Fog::JSON.encode(body)
           }
-          request(power_on_options)
+          response = nil
+          time = Benchmark.realtime {
+            response = request(options)
+          }
+          puts "SetEnqueueServerStart time: #{time}"
+          if response['Success']
+            response
+          else
+            raise Fog::ArubaCloud::Error::RequestError
+          end
         end
       end
     end

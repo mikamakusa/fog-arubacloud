@@ -10,12 +10,13 @@ require 'fog/arubacloud'
 
 service = Fog::Compute.new({
     :provider             => 'ArubaCloud',
-    :arubacloud_username  => 'ARU-XXXX',
-    :arubacloud_password  => 'XXXXXXXXXX'
+    :arubacloud_username  => 'XXX-XXXX',
+    :arubacloud_password  => 'XXXXXXX'
 })
 
 servers = service.servers
 servers.all.each do |server|
+  server.get_server_details
   puts server.id
   puts server.name
 end

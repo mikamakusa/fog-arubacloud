@@ -6,26 +6,23 @@
 #
 
 require 'fog/arubacloud/service'
-require 'fog/arubacloud/error'
-require 'benchmark'
 
 module Fog
   module Compute
     class ArubaCloud
-      # noinspection RubyResolve
       class Real
-        def get_servers
-          body = self.body('GetServers')
-          get_servers_options = {
+        def purchase_ip
+          body = self.body('SetPurchaseIpAddress')
+          options = {
               :http_method => :post,
-              :method => 'GetServers',
+              :method => 'SetPurchaseIpAddress',
               :body => Fog::JSON.encode(body)
           }
           response = nil
           time = Benchmark.realtime {
-            response = request(get_servers_options)
+            response = request(options)
           }
-          puts "GetServer time: #{time}"
+          puts "SetPurchaseIpAddress time: #{time}"
           if response['Success']
             response
           else
