@@ -30,14 +30,30 @@ module Fog
         attribute :hd_qty, :aliases => 'HDQuantity'
         attribute :hd_total_size, :aliases => 'HDTotalSize'
         attribute :admin_password
+        attribute :vm_type
+        attribute :ipv4_addr
+        attribute :package_id
 
         def initialize(attributes = {})
           @service = attributes[:service]
+
+          if attributes[:vm_type].nil?
+            self.vm_type = 'smart' if hypervisor.is? '4' || 'pro'
+          end
+
           super
         end
 
+        def save
+          if persisted?
+            update
+          else
+            create
+          end
+        end
+
         def create
-          requires :name, :cpu, :memory, :admin_password, :hypervisor
+          requires :name, :cpu, :memory, :admin_password, :vm_type, :package_id
           data = attributes
 
           response = service.create_vm(data)

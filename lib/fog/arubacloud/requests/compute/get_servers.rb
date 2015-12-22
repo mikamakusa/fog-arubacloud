@@ -29,7 +29,7 @@ module Fog
           if response['Success']
             response
           else
-            raise Fog::ArubaCloud::Error::RequestError
+            raise Fog::ArubaCloud::Errors::RequestError
           end
         end
       end

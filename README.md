@@ -1,5 +1,10 @@
 # Fog::Arubacloud
 
+[![Build Status](https://travis-ci.org/blackms/fog-arubacloud.svg?branch=master)](https://travis-ci.org/blackms/fog-arubacloud.svg?branch=master)]
+[![Code Climate](https://codeclimate.com/repos/56792d122af2347fc2002962/badges/c178bedcd59b3384529d/gpa.svg)](https://codeclimate.com/repos/56792d122af2347fc2002962/feed)
+[![Test Coverage](https://codeclimate.com/repos/56792d122af2347fc2002962/badges/c178bedcd59b3384529d/coverage.svg)](https://codeclimate.com/repos/56792d122af2347fc2002962/coverage)
+
+
 TODO: Write a gem description
 
 ## Installation

@@ -14,5 +14,16 @@ service = Fog::Compute.new({
                                :arubacloud_password  => 'XXXXXXX'
                            })
 
-servers = service.create_pro_vm({:prova => 'ciao', :ipv4 => {:id => 100}})
+# Create a Smart VM
+server = service.servers.create({
+                                    :name           => 'testfog',
+                                    :vm_type        =>'smart',
+                                    :admin_password => 'Prova123',
+                                    :cpu            => 1,
+                                    :memory         => 1,
+                                    :template_id    => '761',
+                                    :package_id     => 'small'
+                                })
+
+# Create a Pro VM
 
