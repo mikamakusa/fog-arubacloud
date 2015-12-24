@@ -12,6 +12,7 @@ require 'benchmark'
 module Fog
   module Compute
     class ArubaCloud
+
       # noinspection RubyResolve
       class Real
         def get_purchased_ip_addresses
@@ -33,6 +34,11 @@ module Fog
           end
         end
       end
+
+      class Mock
+        # TODO: Implement Mock Class
+      end
+
     end
   end
 end

@@ -15,5 +15,18 @@ service = Fog::Compute.new({
                            })
 
 # Retrieve purchased IP list.
-ips = service.ips
-ips.each { |ip| puts ip.address }
+# ips = service.ips
+# ips.each { |ip| puts ip.address }
+
+# Retrieve template list
+# Hypervisor Types:
+#  1 -> Microsoft Hyper-V - Cloud Pro
+#  2 -> VMWare - Cloud Pro
+#  3 -> Microsoft Hyper-V Low Cost - Cloud Pro
+#  4 -> VMWare - Cloud Smart
+templates = service.templates
+# Filter only smart templates
+smart_templates = templates.select { |template| template.hypervisor.eql?(4) && template.enabled }
+# Filter only templates which contains Centos in the name
+centos_smart = smart_templates.select { |template| template.name.include?('Centos')}
+centos_smart

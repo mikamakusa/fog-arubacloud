@@ -55,10 +55,10 @@ module Fog
         def create
           requires :name, :cpu, :memory, :admin_password, :vm_type, :package_id
           data = attributes
-
           response = service.create_vm(data)
-          new_attributes = response[:Value]
-          merge_attributes(new_attributes)
+          # Create method doesn't return a json containing the server data, only a true/false.
+          # new_attributes = response['Value']
+          # merge_attributes(new_attributes)
         end
 
         def get_server_details

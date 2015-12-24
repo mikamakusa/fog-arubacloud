@@ -16,13 +16,13 @@ service = Fog::Compute.new({
 
 # Create a Smart VM
 server = service.servers.create({
-                                    :name           => 'testfog',
-                                    :vm_type        =>'smart',
+                                    :name           => 'testfog1',
+                                    :vm_type        => 'smart',
                                     :admin_password => 'Prova123',
                                     :cpu            => 1,
                                     :memory         => 1,
-                                    :template_id    => '761',
-                                    :package_id     => 'small'
+                                    :template_id    => '415',
+                                    :package_id     => 1
                                 })
 
 # Create a Pro VM

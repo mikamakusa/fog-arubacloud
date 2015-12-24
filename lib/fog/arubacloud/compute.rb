@@ -18,6 +18,8 @@ module Fog
       model      :server
       collection :ips
       model      :ip
+      collection :templates
+      model      :template
 
       # Requests
       request_path 'fog/arubacloud/requests/compute'
@@ -30,6 +32,7 @@ module Fog
       request :purchase_ip
       request :remove_ip
       request :get_purchased_ip_addresses
+      request :get_hypervisors
 
       # Mock class to run a fake instance of the Service with no real connections.
       class Mock < Fog::ArubaCloud::Service
@@ -49,7 +52,7 @@ module Fog
 
         def body(method)
           {
-              :ApplicationIs => method,
+              :ApplicationId => method,
               :RequestId => method,
               :Sessionid => method,
               :Username => @arubacloud_username,

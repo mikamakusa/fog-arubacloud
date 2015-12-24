@@ -12,32 +12,31 @@ require 'benchmark'
 module Fog
   module Compute
     class ArubaCloud
-      # noinspection RubyResolve
       class Real
-        # Return the server details
-        # @return [Ex]
-        def get_server_details(server_id)
-          body = self.body('GetServerDetails').merge({:ServerId => server_id})
+        def get_hypervisors
+          body = self.body('GetHypervisors')
           options = {
               :http_method => :post,
-              :method => 'GetServerDetails',
+              :method => 'GetHypervisors',
               :body => Fog::JSON.encode(body)
           }
           response = nil
           time = Benchmark.realtime {
             response = request(options)
           }
-          puts "GetServerDetails time: #{time}"
+          puts "GetHypervisors time: #{time}"
           if response['Success']
             response
           else
-            raise Fog::ArubaCloud::Errors::NotFound
+            raise Fog::ArubaCloud::Errors::RequestError
           end
         end
-
-        class Mock
-        end
       end
+
+      class Mock
+        # TODO: Implement Mock class
+      end
+
     end
   end
 end

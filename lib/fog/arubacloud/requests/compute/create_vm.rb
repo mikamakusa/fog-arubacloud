@@ -19,7 +19,11 @@ module Fog
         # @param [Int] ram amount of ram in GB
         # @param [String] template_id id of template to use
         # @param [String] ipv4_id if present, the ID of the ip resource to associate
-        # @param [String] size (small|medium|big|huge) type of smart VM
+        # @param [Int] size
+        # * 1 => small
+        # * 2 => medium
+        # * 3 => large
+        # * 4 => extra-large
         # @param [String] note Metadata for VM
         # @return []
         def create_vm(data)
@@ -52,14 +56,14 @@ module Fog
                     :Server => {
                         :AdministratorPassword => data[:admin_password],
                         :Name => data[:name],
-                        :SmartVMWarePackageID => data[:size] || 'small',
+                        :SmartVMWarePackageID => data[:size] || 1,
                         :Note => data[:note] || 'Created by Fog Cloud.',
                         :OSTemplateId => data[:template_id]
                     }
                 }
             )
           else
-            raise Fog::ArubaCloud::Error::BadParameters
+            raise Fog::ArubaCloud::Errors::BadParameters
           end
 
           options = {
