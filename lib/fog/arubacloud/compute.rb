@@ -20,6 +20,8 @@ module Fog
       model      :ip
       collection :templates
       model      :template
+      collection :disks
+      model      :disk
 
       # Requests
       request_path 'fog/arubacloud/requests/compute'
@@ -33,6 +35,7 @@ module Fog
       request :remove_ip
       request :get_purchased_ip_addresses
       request :get_hypervisors
+      request :reinitialize_vm
 
       # Mock class to run a fake instance of the Service with no real connections.
       class Mock < Fog::ArubaCloud::Service
@@ -41,15 +44,10 @@ module Fog
           @arubacloud_password = options[:arubacloud_password] || ''
           @ws_enduser_url = options[:url] || Fog::ArubaCloud::DEFAULT_WS_ENDUSER_URL
         end
-      end
 
-      class Real < Fog::ArubaCloud::Service
-        def initialize(options={})
-          @arubacloud_username = options[:arubacloud_username] || ''
-          @arubacloud_password = options[:arubacloud_password] || ''
-          @ws_enduser_url = options[:url] || Fog::ArubaCloud::DEFAULT_WS_ENDUSER_URL
-        end
-
+        # Return the base json object used by each request.
+        # @param method [String] the name of the method to call.
+        # @return [Hash] base scheme for json request.
         def body(method)
           {
               :ApplicationId => method,
@@ -59,8 +57,29 @@ module Fog
               :Password => @arubacloud_password
           }
         end
-      end
+      end #Mock
 
-    end
-  end
-end
+      class Real < Fog::ArubaCloud::Service
+        def initialize(options={})
+          @arubacloud_username = options[:arubacloud_username] || ''
+          @arubacloud_password = options[:arubacloud_password] || ''
+          @ws_enduser_url = options[:url] || Fog::ArubaCloud::DEFAULT_WS_ENDUSER_URL
+        end
+
+        # Return the base json object used by each request.
+        # @param method [String] the name of the method to call.
+        # @return [Hash] base scheme for json request.
+        def body(method)
+          {
+              :ApplicationId => method,
+              :RequestId => method,
+              :Sessionid => method,
+              :Username => @arubacloud_username,
+              :Password => @arubacloud_password
+          }
+        end
+      end #Real
+
+    end #ArubaCloud
+  end #Compute
+end #Fog

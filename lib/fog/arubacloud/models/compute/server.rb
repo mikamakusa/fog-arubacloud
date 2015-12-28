@@ -6,6 +6,7 @@
 #
 
 require 'fog/compute/models/server'
+require 'fog/arubacloud/error'
 
 module Fog
   module Compute
@@ -53,7 +54,7 @@ module Fog
         end
 
         def create
-          requires :name, :cpu, :memory, :admin_password, :vm_type, :package_id
+          requires :name, :cpu, :memory, :admin_password, :vm_type
           data = attributes
           response = service.create_vm(data)
           # Create method doesn't return a json containing the server data, only a true/false.
@@ -80,7 +81,12 @@ module Fog
 
         def delete
           requires :id
-          state == STOPPED ? service.delete_vm(id) : raise(Exception)
+          state == STOPPED ? service.delete_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus)
+        end
+
+        def reinitialize
+          requires :id
+          state == STOPPED ? service.reinitialize_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus)
         end
 
       end

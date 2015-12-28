@@ -6,16 +6,19 @@
 #
 
 require 'fog/arubacloud/service'
-require 'fog/arubacloud/error'
 require 'benchmark'
 
 module Fog
   module Compute
     class ArubaCloud
-      # noinspection RubyResolve
       class Real
-        def get_servers
-          body = self.body('GetServers')
+        # Reinitialize a Smart VM
+        # @param id [String] the id of the virtual machine to reinitialize
+        # @return response [Excon::Response]
+        def reinitialize_vm(id)
+          body = self.body('SetEnqueueReinitializeServer').merge({
+                                                                     :ServerId => id
+                                                                 })
           options = {
               :http_method => :post,
               :method => 'GetServers',
@@ -25,7 +28,7 @@ module Fog
           time = Benchmark.realtime {
             response = request(options)
           }
-          puts "GetServer time: #{time}"
+          puts "SetEnqueueReinitializeServer time: #{time}"
           if response['Success']
             response
           else
@@ -33,6 +36,7 @@ module Fog
           end
         end
       end
+
     end
   end
 end

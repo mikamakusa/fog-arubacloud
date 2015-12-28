@@ -35,7 +35,7 @@ module Fog
           @service.remove_ip(id)
         end
 
-      end
-    end
-  end
-end
+      end #IP
+    end #ArubaCloud
+  end #Compute
+end #Fog

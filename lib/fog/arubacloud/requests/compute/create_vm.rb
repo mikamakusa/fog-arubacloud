@@ -50,6 +50,9 @@ module Fog
                   :PublicIpAddressResourceId => data[:ipv4_id]
               }
             end
+            unless data[:disks].nil? && data[:disks].instance_of?(Array)
+              body[:Server][:VirtualDisks] << data[:disks]
+            end
           elsif vm_type.eql? 'smart'
             body = self.body('SetEnqueueServerCreation').merge(
                 {

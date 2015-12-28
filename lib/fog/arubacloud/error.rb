@@ -8,6 +8,7 @@
 module Fog
   module ArubaCloud
     module Errors
+
       class Error < Fog::Errors::Error
         attr_accessor :type, :error_point
 
@@ -19,13 +20,29 @@ module Fog
       end
 
       class NotFound < Error
+
       end
 
       class RequestError < Error
+
       end
 
       class BadParameters < Error
+
       end
+
+      class VmStatus < Error
+
+      end
+
+      class BadDiskSize < Error
+
+      end
+
+      class BadDiskNumber < Error
+
+      end
+
     end
   end
 end
