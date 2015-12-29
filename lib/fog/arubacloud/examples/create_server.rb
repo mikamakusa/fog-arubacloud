@@ -7,6 +7,7 @@
 
 require 'rubygems'
 require 'fog/arubacloud'
+require 'securerandom'
 
 service = Fog::Compute.new({
                                :provider             => 'ArubaCloud',
@@ -38,13 +39,15 @@ disk1 = service.disks.create({
                              }).get_hash
 ## Create the Array containing both disks
 disks = [disk0, disk1]
+## Generate random string to append to vm name
+rnd_string = SecureRandom.hex(2)
 ## Create the virtual machine
 server = service.servers.create({
-    :name           => 'testpro1',
+    :name           => "testpro#{rnd_string}",
     :vm_type        => 'pro',
-    :admin_password => 'Prova123',
+    :admin_passwd   => 'Prova123',
     :cpu            => 1,
     :memory         => 1,
     :template_id    => 60,  # ac_Centos6_web_x64_3_1
     :disks          => disks
-                                })
+})

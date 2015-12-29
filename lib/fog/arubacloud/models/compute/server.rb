@@ -30,7 +30,7 @@ module Fog
         attribute :template_id, :aliases => 'OSTemplateId'
         attribute :hd_qty, :aliases => 'HDQuantity'
         attribute :hd_total_size, :aliases => 'HDTotalSize'
-        attribute :admin_password
+        attribute :admin_passwd
         attribute :vm_type
         attribute :ipv4_addr
         attribute :package_id
@@ -39,7 +39,7 @@ module Fog
           @service = attributes[:service]
 
           if attributes[:vm_type].nil?
-            self.vm_type = 'smart' if hypervisor.is? '4' || 'pro'
+            self.vm_type = 'smart' if attributes['HypervisorType'].eql? '4' || 'pro'
           end
 
           super
@@ -54,20 +54,23 @@ module Fog
         end
 
         def create
-          requires :name, :cpu, :memory, :admin_password, :vm_type
-          data = attributes.delete(:vm_type)
+          requires :name, :cpu, :memory, :admin_passwd, :vm_type
+          data = attributes
 
           if vm_type.eql? 'pro'
-            service.create_vm_pro(data)
+            # Automatically purchase a public ip address
+            data[:ipv4_id] = service.purchase_ip['Value']['ResourceId']
+            response = service.create_vm_pro(data)
           elsif vm_type.eql? 'smart'
-            service.create_vm_smart(data)
+            response = service.create_vm_smart(data)
           else
             raise Fog::ArubaCloud::Errors::BadParameters.new('VM Type can be smart or pro.')
           end
 
-          # Create method doesn't return a json containing the server data, only a true/false.
-          # new_attributes = response['Value']
-          # merge_attributes(new_attributes)
+          # Retrieve new server list and filter the current virtual machine
+          # in order to retrieve the ID
+          server = service.get_servers.fetch('Value').select {|v| v.values_at('Name').include?(data[:name])}.first
+          merge_attributes(server)
         end
 
         def get_server_details
@@ -78,23 +81,33 @@ module Fog
         end
 
         def power_off
-          requires :id
+          requires :id, :state
+          unless state.eql? RUNNING
+            raise Fog::ArubaCloud::Errors::VmStatus.new("Cannot poweroff vm in current state: #{state}")
+          end
           @service.power_off_vm(id)
         end
 
         def power_on
-          requires :id
+          requires :id, :state
+          unless state.eql? STOPPED
+            raise Fog::ArubaCloud::Errors::VmStatus.new("Cannot poweron vm in current state: #{state}")
+          end
           @service.power_on_vm(id)
         end
 
         def delete
           requires :id
-          state == STOPPED ? service.delete_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus)
+          state == STOPPED ? service.delete_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
+              "Cannot delete vm in current state: #{state}"
+          ))
         end
 
         def reinitialize
-          requires :id
-          state == STOPPED ? service.reinitialize_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus)
+          requires :id, :hypervisor
+          state == STOPPED ? service.reinitialize_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
+              "Cannot reinitialize vm in current state: #{state}"
+          ))
         end
 
       end

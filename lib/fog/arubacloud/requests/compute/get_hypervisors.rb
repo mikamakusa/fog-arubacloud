@@ -28,7 +28,7 @@ module Fog
           if response['Success']
             response
           else
-            raise Fog::ArubaCloud::Errors::RequestError
+            raise Fog::ArubaCloud::Errors::RequestError.new('Error in request.')
           end
         end
       end

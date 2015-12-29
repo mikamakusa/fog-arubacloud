@@ -26,7 +26,7 @@ module Fog
           if response['Success']
             response
           else
-            raise Fog::ArubaCloud::Error::RequestError
+            raise Fog::ArubaCloud::Errors::RequestError.new("Error purchasing new ip. Error: \n#{response}")
           end
         end
       end

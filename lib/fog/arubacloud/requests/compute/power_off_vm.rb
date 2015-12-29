@@ -6,6 +6,7 @@
 #
 
 require 'fog/arubacloud/service'
+require 'fog/arubacloud/error'
 
 module Fog
   module Compute
@@ -26,7 +27,7 @@ module Fog
           if response['Success']
             response
           else
-            raise Fog::ArubaCloud::Error::RequestError
+            raise Fog::ArubaCloud::Errors::RequestError.new("Error Powering off the VM. Error: #{response}")
           end
         end
       end

@@ -26,7 +26,7 @@ service = Fog::Compute.new({
 #  4 -> VMWare - Cloud Smart
 templates = service.templates
 # Filter only smart templates
-smart_templates = templates.select { |template| template.hypervisor.eql?(2) && template.enabled }
+smart_templates = templates.select { |template| template.hypervisor.eql?(4) && template.enabled }
 # Filter only templates which contains Centos in the name
 centos_smart = smart_templates.select { |template| template.name.include?('Centos')}
 centos_smart.each do |t|

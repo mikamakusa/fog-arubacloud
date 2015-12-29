@@ -6,6 +6,7 @@
 #
 
 require 'fog/core/model'
+require 'fog/arubacloud/error'
 
 module Fog
   module Compute
@@ -31,7 +32,10 @@ module Fog
         end
 
         def remove
-          requires :id
+          requires :id, :server
+          unless server.nil?
+            raise Fog::ArubaCloud::Errors::RequestError.new('Cannot remove an address attached to a vm.')
+          end
           @service.remove_ip(id)
         end
 

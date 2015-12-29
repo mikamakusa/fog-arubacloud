@@ -6,6 +6,7 @@
 #
 
 require 'fog/arubacloud/service'
+require 'benchmark'
 
 module Fog
   module Compute
@@ -30,19 +31,22 @@ module Fog
                         :NetworkAdaptersConfiguration => [],
                         :Note => 'Created by Fog Cloud.',
                         :OSTemplateId => data[:template_id],
-                        :RAMQuantity => data[:ram],
+                        :RAMQuantity => data[:memory],
                         :VirtualDisks => []
                     }
                 }
             )
             unless data[:ipv4_id].nil?
               body[:Server][:NetworkAdaptersConfiguration] << {
-                  :PrimaryIPAddress => true,
-                  :PublicIpAddressResourceId => data[:ipv4_id]
+                  :NetworkAdapterType => 0,
+                  :PublicIpAddresses => [{
+                      :PrimaryIPAddress => 'true',
+                      :PublicIpAddressResourceId => data[:ipv4_id]
+                  }]
               }
             end
             unless data[:disks].nil? && data[:disks].instance_of?(Array)
-              body[:Server][:VirtualDisks] << data[:disks]
+              data[:disks].each { |d| body[:Server][:VirtualDisks] << d}
             end
 
           options = {
@@ -51,7 +55,17 @@ module Fog
               :body => Fog::JSON.encode(body)
           }
 
-          request(options)
+          response = nil
+          time = Benchmark.realtime {
+            response = request(options)
+          }
+          puts "SetEnqueueServerCreation time: #{time}"
+          if response['Success']
+            response
+          else
+            raise Fog::ArubaCloud::Errors::RequestError.new("Error during the VM creation. Object: \n#{body}\nError: \n#{response}")
+          end
+
         end
       end
 

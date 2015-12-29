@@ -1,5 +1,18 @@
 language: ruby
-rvm:
-  - 2.2.0
-  - 2.1.9
-  - 2.2.1
+sudo: false
+matrix:
+  fast_finish: true
+  include:
+    - rvm: 2.0
+    - rvm: 2.1
+    - rvm: 2.2
+    - rvm: jruby-head
+  allow_failures:
+    - rvm: jruby-head
+
+notifications:
+  email: false
+
+addons:
+  code_climate:
+    repo_token: aa685a2a9df69442e10939c85a9bd733c8baaef581d7ec8f8596e637f6abfe66

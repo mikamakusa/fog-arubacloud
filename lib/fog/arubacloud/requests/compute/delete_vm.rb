@@ -11,12 +11,21 @@ module Fog
       class Real
         def delete_vm(id)
           body = self.body('SetEnqueueServerDeletion').merge({:ServerId => "#{id}"})
-          delete_vm_options = {
+          options = {
               :http_method => :post,
               :method => 'SetEnqueueServerDeletion',
               :body => Fog::JSON.encode(body)
           }
-          request(delete_vm_options)
+          response = nil
+          time = Benchmark.realtime {
+            response = request(options)
+          }
+          puts "SetEnqueueServerDeletion time: #{time}"
+          if response['Success']
+            response
+          else
+            raise Fog::ArubaCloud::Errors::RequestError.new("Error Powering off the VM. Error: #{response}")
+          end
         end
       end
     end
