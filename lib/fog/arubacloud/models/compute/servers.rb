@@ -22,7 +22,7 @@ module Fog
         #       filtering.
         def all(filters = [])
           data = service.get_servers
-          objects = data["Value"]
+          objects = data['Value']
           load(objects)
         end
 
@@ -31,7 +31,7 @@ module Fog
         # @return [Fog::Compute::ArubaCloud::Server]
         def get(server_id)
           data = service.get_server_details(server_id)
-          objects = data["Value"]
+          objects = data['Value']
           load(objects)
         end
 

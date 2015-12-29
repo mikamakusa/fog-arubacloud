@@ -55,8 +55,16 @@ module Fog
 
         def create
           requires :name, :cpu, :memory, :admin_password, :vm_type
-          data = attributes
-          response = service.create_vm(data)
+          data = attributes.delete(:vm_type)
+
+          if vm_type.eql? 'pro'
+            service.create_vm_pro(data)
+          elsif vm_type.eql? 'smart'
+            service.create_vm_smart(data)
+          else
+            raise Fog::ArubaCloud::Errors::BadParameters.new('VM Type can be smart or pro.')
+          end
+
           # Create method doesn't return a json containing the server data, only a true/false.
           # new_attributes = response['Value']
           # merge_attributes(new_attributes)

@@ -11,26 +11,17 @@ module Fog
   module Compute
     class ArubaCloud
       class Real
-        # Create a new VM: Smart or Pro type.
-        # @param [String] type (pro or smart) type of server
+        # Create a new VM: Pro.
         # @param [String] name name of the server
         # @param [String] admin_password server administrative password
         # @param [Int] cpu amount of vcpu
         # @param [Int] ram amount of ram in GB
         # @param [String] template_id id of template to use
         # @param [String] ipv4_id if present, the ID of the ip resource to associate
-        # @param [Int] size
-        # * 1 => small
-        # * 2 => medium
-        # * 3 => large
-        # * 4 => extra-large
         # @param [String] note Metadata for VM
-        # @return []
-        def create_vm(data)
-          vm_type = data[:vm_type].to_s.downcase || 'pro'
-
-          if vm_type.eql? 'pro'
-            body = self.body('SetEnqueueServerCreation').merge(
+        # @return [Excon::Response]
+        def create_vm_pro(data)
+          body = self.body('SetEnqueueServerCreation').merge(
                 {
                     :Server => {
                         :AdministratorPassword => data[:admin_passwd],
@@ -53,21 +44,6 @@ module Fog
             unless data[:disks].nil? && data[:disks].instance_of?(Array)
               body[:Server][:VirtualDisks] << data[:disks]
             end
-          elsif vm_type.eql? 'smart'
-            body = self.body('SetEnqueueServerCreation').merge(
-                {
-                    :Server => {
-                        :AdministratorPassword => data[:admin_password],
-                        :Name => data[:name],
-                        :SmartVMWarePackageID => data[:size] || 1,
-                        :Note => data[:note] || 'Created by Fog Cloud.',
-                        :OSTemplateId => data[:template_id]
-                    }
-                }
-            )
-          else
-            raise Fog::ArubaCloud::Errors::BadParameters
-          end
 
           options = {
               :http_method => :post,
@@ -80,7 +56,7 @@ module Fog
       end
 
       class Mock
-        def create_vm(data)
+        def create_vm_pro(data)
           response = Excon::Response.new
           response.status = 201
           response.body = {

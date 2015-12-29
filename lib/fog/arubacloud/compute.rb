@@ -30,7 +30,8 @@ module Fog
       request :get_servers
       request :get_server_details
       request :delete_vm
-      request :create_vm
+      request :create_vm_pro
+      request :create_vm_smart
       request :purchase_ip
       request :remove_ip
       request :get_purchased_ip_addresses
