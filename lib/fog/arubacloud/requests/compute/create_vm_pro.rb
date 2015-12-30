@@ -74,9 +74,12 @@ module Fog
           response = Excon::Response.new
           response.status = 201
           response.body = {
-              # TODO: Implement standard response
+              'ExceptionInfo' => nil,
+              'ResultCode' => 0,
+              'ResultMessage' => nil,
+              'Success' => true
           }
-          response
+          response.body
         end
       end
 

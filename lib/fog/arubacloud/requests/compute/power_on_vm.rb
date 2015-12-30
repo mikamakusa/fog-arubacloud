@@ -28,8 +28,22 @@ module Fog
           else
             raise Fog::ArubaCloud::Error::RequestError
           end
-        end
-      end
-    end
-  end
-end
+        end # power_on_vm
+      end # Real
+
+      class Mock
+        def power_on_vm(id)
+          response = Excon::Response.new
+          response.status = 200
+          response.body = {
+              'ExceptionInfo' => nil,
+              'ResultCode' => 0,
+              'ResultMessage' => nil,
+              'Success' => true
+          }
+          response.body
+        end # power_on_vm
+      end # Mock
+    end # ArubaCloud
+  end # Compute
+end # Fog

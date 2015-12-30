@@ -30,8 +30,24 @@ module Fog
           else
             raise Fog::ArubaCloud::Error::RequestError
           end
-        end
-      end
-    end
-  end
-end
+        end # remove_ip
+      end # Real
+
+      class Mock
+        def remove_ip(id)
+          self.ips.select!{|i| !i.id.eql?(id)}
+          response = Excon::Response.new
+          response.status = 200
+          response.body = {
+              'ExceptionInfo' => nil,
+              'ResultCode' => 0,
+              'ResultMessage' => nil,
+              'Success' => true
+          }
+          response.body
+        end # remove_ip
+      end # Mock
+
+    end # ArubaCloud
+  end # Compute
+end # Fog

@@ -30,13 +30,20 @@ module Fog
           else
             raise Fog::ArubaCloud::Errors::RequestError.new('Error in request.')
           end
-        end
-      end
+        end # get_hypervisors
+      end # Real
 
       class Mock
-        # TODO: Implement Mock class
-      end
+        # Due to the length of the response body, I actually decided to not implement
+        # the mock method of the request. I will introduce it in the next version after structuring the mock
+        # objects in a more reasonable way.
+        def get_hypervisors
+          raise Fog::Errors::MockNotImplemented.new(
+              'Mock object for get_hypervisor not present, read code comments for details.'
+          )
+        end # get_hypervisors
+      end # Mock
 
-    end
-  end
-end
+    end # ArubaCloud
+  end # Compute
+end # Fog

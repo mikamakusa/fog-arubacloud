@@ -8,6 +8,7 @@
 module Fog
   module Compute
     class ArubaCloud
+
       class Real
         def delete_vm(id)
           body = self.body('SetEnqueueServerDeletion').merge({:ServerId => "#{id}"})
@@ -26,8 +27,24 @@ module Fog
           else
             raise Fog::ArubaCloud::Errors::RequestError.new("Error Powering off the VM. Error: #{response}")
           end
-        end
-      end
-    end
-  end
-end
+        end # delete_vm
+      end # Real
+
+      class Mock
+        def delete_vm(id)
+          self.servers.select!{|s| s.id.eql?(id)}
+          response = Excon::Response.new
+          response.status = 200
+          response.body = {
+              'ExceptionInfo' => nil,
+              'ResultCode' => 0,
+              'ResultMessage' => nil,
+              'Success' => true
+          }
+          response.body
+        end # delete_vm
+      end # Mock
+
+    end # ArubaCloud
+  end # Compute
+end # Fog

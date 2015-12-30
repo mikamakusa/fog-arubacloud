@@ -34,9 +34,23 @@ module Fog
           else
             raise Fog::ArubaCloud::Errors::RequestError
           end
-        end
-      end
+        end # reinitialize_vm
+      end # Real
 
-    end
-  end
-end
+      class Mock
+        def reinitialize_vm(id)
+          response = Excon::Response.new
+          response.status = 200
+          response.body = {
+              'ExceptionInfo' => nil,
+              'ResultCode' => 0,
+              'ResultMessage' => nil,
+              'Success' => true
+          }
+          response.body
+        end # reinitialize_vm
+      end # Mock
+
+    end # ArubaCloud
+  end # Compute
+end # Fog

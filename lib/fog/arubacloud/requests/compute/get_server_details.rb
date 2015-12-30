@@ -12,10 +12,10 @@ require 'benchmark'
 module Fog
   module Compute
     class ArubaCloud
-      # noinspection RubyResolve
+
       class Real
         # Return the server details
-        # @return [Ex]
+        # @return [Excon::Response]
         def get_server_details(server_id)
           body = self.body('GetServerDetails').merge({:ServerId => server_id})
           options = {
@@ -31,13 +31,21 @@ module Fog
           if response['Success']
             response
           else
-            raise Fog::ArubaCloud::Errors::NotFound
+            raise Fog::ArubaCloud::Errors::RequestError.new(
+                "Error during GetServerDetails request. Error message: \n#{response}"
+            )
           end
-        end
+        end # get_server_details
+      end # Real
 
-        class Mock
-        end
-      end
-    end
-  end
-end
+      class Mock
+        def get_server_details(server_id)
+          raise Fog::Errors::MockNotImplemented.new(
+              'Mock not implemented. Feel free to contribute.'
+          )
+        end # get_server_details
+      end # Mock
+
+    end # ArubaCloud
+  end # Compute
+end # Fog

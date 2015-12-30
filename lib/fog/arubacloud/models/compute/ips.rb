@@ -20,7 +20,7 @@ module Fog
         # @raise [Fog::ArubaCloud::Errors::NotFound]
         def all
           data = service.get_purchased_ip_addresses
-          objects = data["Value"]
+          objects = data['Value']
           load(objects)
         end
 
@@ -30,6 +30,13 @@ module Fog
         # @raise [Fog::ArubaCloud::Errors::NotFound]
         def get(ip)
           # TODO: Implement single item retrieve
+        end
+
+        # Purchase a new IpAddress
+        # @return [Hash] hash containing the response of the request
+        # @raise [Fog::ArubaCloud::Errors::RequestError]
+        def purchase
+          self << new(service.purchase_ip['Value'])
         end
 
       end

@@ -8,11 +8,13 @@
 require 'rubygems'
 require 'fog/arubacloud'
 
+Fog.mock!
 service = Fog::Compute.new({
                                :provider             => 'ArubaCloud',
                                :arubacloud_username  => 'XXX-XXXX',
                                :arubacloud_password  => 'XXXXXXX'
                            })
+
 
 #servers = service.servers
 
@@ -27,7 +29,8 @@ service = Fog::Compute.new({
 #end
 
 # Release all unassociated IP
-ips = service.ips
-ips.each do |i|
-  i.remove
-end
+# ips = service.ips
+# ips.each do |i|
+#   puts i.address
+#   i.remove
+# end

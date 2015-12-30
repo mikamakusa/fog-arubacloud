@@ -26,7 +26,7 @@ module Fog
           body = self.body('SetEnqueueServerCreation').merge(
               {
                   :Server => {
-                      :AdministratorPassword => data[:admin_password],
+                      :AdministratorPassword => data[:admin_passwd],
                       :Name => data[:name],
                       :SmartVMWarePackageID => data[:size] || 1,
                       :Note => data[:note] || 'Created by Fog Cloud.',
@@ -41,7 +41,16 @@ module Fog
               :body => Fog::JSON.encode(body)
           }
 
-          request(options)
+          response = nil
+          time = Benchmark.realtime {
+            response = request(options)
+          }
+          puts "SetEnqueueServerCreation time: #{time}"
+          if response['Success']
+            response
+          else
+            raise Fog::ArubaCloud::Errors::RequestError.new("Error during the VM creation. Object: \n#{body}\nError: \n#{response}")
+          end
         end
       end
 
@@ -50,11 +59,14 @@ module Fog
           response = Excon::Response.new
           response.status = 201
           response.body = {
-              # TODO: Implement standard response
+              'ExceptionInfo' => nil,
+              'ResultCode' => 0,
+              'ResultMessage' => nil,
+              'Success' => true
           }
-          response
-        end
-      end
+          response.body
+        end # create_vm_smart
+      end # Mock
 
     end # ArubaCloud
   end # Compute
