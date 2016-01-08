@@ -1,8 +1,7 @@
 # Fog::Arubacloud
 
-[![Code Climate](https://codeclimate.com/github/blackms/fog-arubacloud/badges/gpa.svg)](https://codeclimate.com/github/blackms/fog-arubacloud)
-[![Test Coverage](https://codeclimate.com/github/blackms/fog-arubacloud/badges/coverage.svg)](https://codeclimate.com/github/blackms/fog-arubacloud/coverage)
-
+[![Code Climate](https://codeclimate.com/github/fog/fog-arubacloud/badges/gpa.svg)](https://codeclimate.com/github/fog/fog-arubacloud)
+[![Test Coverage](https://codeclimate.com/github/fog/fog-arubacloud/badges/coverage.svg)](https://codeclimate.com/github/fog/fog-arubacloud/coverage)
 
 Module for the 'fog' gem to support ArubaCloud IaaS Service
 
