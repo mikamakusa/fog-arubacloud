@@ -1,11 +1,10 @@
 # Fog::Arubacloud
 
-[![Build Status](https://travis-ci.org/blackms/fog-arubacloud.svg?branch=master)](https://travis-ci.org/blackms/fog-arubacloud)
 [![Code Climate](https://codeclimate.com/github/blackms/fog-arubacloud/badges/gpa.svg)](https://codeclimate.com/github/blackms/fog-arubacloud)
 [![Test Coverage](https://codeclimate.com/github/blackms/fog-arubacloud/badges/coverage.svg)](https://codeclimate.com/github/blackms/fog-arubacloud/coverage)
 
 
-TODO: Write a gem description
+Module for the 'fog' gem to support ArubaCloud IaaS Service
 
 ## Installation
 

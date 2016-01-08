@@ -10,6 +10,7 @@ require 'fog/arubacloud/service'
 module Fog
   module Compute
     class ArubaCloud < Fog::Service
+      recognizes :url
       requires :arubacloud_username, :arubacloud_password
 
       # Models
