@@ -34,7 +34,6 @@ module Fog
           objects = data['Value']
           load(objects)
         end
-
       end
     end
   end

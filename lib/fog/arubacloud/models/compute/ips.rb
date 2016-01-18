@@ -32,6 +32,11 @@ module Fog
           # TODO: Implement single item retrieve
         end
 
+        # Returns list of Ip Addresses related to a Virtual Machine
+        def filter_by_vmid(vmid)
+          # TODO: Implement filter ip per ID
+        end
+
         # Purchase a new IpAddress
         # @return [Hash] hash containing the response of the request
         # @raise [Fog::ArubaCloud::Errors::RequestError]

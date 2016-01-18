@@ -7,11 +7,19 @@
 
 require 'rubygems'
 require 'fog/arubacloud'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = 'Usage: get_servers.rb [options]'
+  opts.on('-uUSERNAME', '--username=USERNAME', 'ArubaCloud Username') { |n| options[:username] = n}
+  opts.on('-pPASSWORD', '--password=PASSWORD', 'ArubaCloud Password') { |p| options[:password] = p}
+end.parse!
 
 service = Fog::Compute.new({
     :provider             => 'ArubaCloud',
-    :arubacloud_username  => 'XXX-XXXX',
-    :arubacloud_password  => 'XXXXXXX'
+    :arubacloud_username  => options[:username],
+    :arubacloud_password  => options[:password]
 })
 
 servers = service.servers

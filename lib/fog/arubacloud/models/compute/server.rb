@@ -23,17 +23,25 @@ module Fog
 
         attribute :name, :aliases => 'Name'
         attribute :state, :aliases => 'ServerStatus'
-        attribute :memory, :aliases => 'RAMQuantity'
-        attribute :cpu, :aliases => 'CPUQuantity', :type => :string
+        attribute :memory, :aliases => 'RAMQuantity', :squash => 'Quantity'
+        attribute :cpu, :aliases => 'CPUQuantity', :squash => 'Quantity'
         attribute :hypervisor, :aliases => 'HypervisorType'
         attribute :datacenter_id, :aliases => 'DatacenterId'
-        attribute :template_id, :aliases => 'OSTemplateId'
         attribute :hd_qty, :aliases => 'HDQuantity'
         attribute :hd_total_size, :aliases => 'HDTotalSize'
+        attribute :smart_ipv4, :aliases => 'EasyCloudIPAddress', :squash => 'Value'
+        attribute :smart_package, :aliases => 'EasyCloudPackageID'
+        attribute :vnc_port, :aliases => 'VncPort'
         attribute :admin_passwd
         attribute :vm_type
         attribute :ipv4_addr
         attribute :package_id
+        attribute :template_id, :aliases => 'OSTemplateId'
+        attribute :template_description, :aliases => 'OSTemplate', :squash => :Description
+
+        ignore_attributes :CompanyId, :Parameters, :VirtualDVDs, :RenewDateSmart, :Note, :CreationDate,
+                          :ControlToolActivationDate, :ControlToolInstalled, :UserId, :ScheduledOperations, :Snapshots,
+                          :ActiveJobs
 
         def initialize(attributes = {})
           @service = attributes[:service]
@@ -60,9 +68,9 @@ module Fog
           if vm_type.eql? 'pro'
             # Automatically purchase a public ip address
             data[:ipv4_id] = service.purchase_ip['Value']['ResourceId']
-            response = service.create_vm_pro(data)
+            service.create_vm_pro(data)
           elsif vm_type.eql? 'smart'
-            response = service.create_vm_smart(data)
+            service.create_vm_smart(data)
           else
             raise Fog::ArubaCloud::Errors::BadParameters.new('VM Type can be smart or pro.')
           end
