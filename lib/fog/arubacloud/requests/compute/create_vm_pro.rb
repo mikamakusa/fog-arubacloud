@@ -59,7 +59,7 @@ module Fog
           time = Benchmark.realtime {
             response = request(options)
           }
-          puts "SetEnqueueServerCreation time: #{time}"
+          Fog::Logger.debug("SetEnqueueServerCreation time: #{time}")
           if response['Success']
             response
           else

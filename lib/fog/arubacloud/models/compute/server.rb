@@ -78,7 +78,12 @@ module Fog
           # Retrieve new server list and filter the current virtual machine
           # in order to retrieve the ID
           server = service.get_servers.fetch('Value').select {|v| v.values_at('Name').include?(data[:name])}.first
-          merge_attributes(server)
+          Fog::Logger.debug("Fog::Compute::ArubaCloud::Server.create, server: #{server.inspect}")
+          if server
+            merge_attributes(server)
+          else
+            Fog::Logger.warning('Fog::Compute::ArubaCloud::Server.create, error during attribute merging, server object is probably nil!')
+          end
         end
 
         def get_server_details
@@ -116,6 +121,13 @@ module Fog
           state == STOPPED ? service.reinitialize_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
               "Cannot reinitialize vm in current state: #{state}"
           ))
+        end
+
+        # Is server in ready state
+        # @param [String] ready_state By default state is RUNNING
+        # @return [Boolean] return true if server is in ready state
+        def ready?(ready_state=RUNNING)
+          state == ready_state
         end
 
       end

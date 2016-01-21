@@ -24,7 +24,7 @@ service = Fog::Compute.new({
                            })
 
 
-#servers = service.servers
+servers = service.servers
 
 # Poweroff all vm in a datacenter
 #servers.each do |s|
@@ -32,9 +32,13 @@ service = Fog::Compute.new({
 #end
 
 # Delete all vm in a datacenter
-#servers.each do |s|
-#  s.delete
-#end
+servers.each do |s|
+  begin
+    s.delete
+  rescue
+    next
+  end
+end
 
 # Release all unassociated IP
 # ips = service.ips

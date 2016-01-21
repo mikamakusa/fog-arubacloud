@@ -29,7 +29,7 @@ rnd_string = SecureRandom.hex(2)
 
 # Create a Smart VM
 server = service.servers.create({
-                                    :name           => 'testfog1',
+                                    :name           => "testfog#{rnd_string}",
                                     :vm_type        => 'smart',
                                     :admin_passwd   => 'Prova123',
                                     :cpu            => 1,

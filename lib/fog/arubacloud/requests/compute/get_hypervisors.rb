@@ -24,7 +24,7 @@ module Fog
           time = Benchmark.realtime {
             response = request(options)
           }
-          puts "GetHypervisors time: #{time}"
+          Fog::Logger.debug("GetHypervisors time: #{time}")
           if response['Success']
             response
           else

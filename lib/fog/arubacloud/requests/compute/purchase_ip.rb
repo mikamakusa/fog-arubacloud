@@ -22,7 +22,7 @@ module Fog
           time = Benchmark.realtime {
             response = request(options)
           }
-          puts "SetPurchaseIpAddress time: #{time}"
+          Fog::Logger.debug("SetPurchaseIpAddress time: #{time}")
           if response['Success']
             response
           else

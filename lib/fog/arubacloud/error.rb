@@ -43,6 +43,22 @@ module Fog
 
       end
 
+      class InvalidStateException < ::RuntimeError
+        attr_reader :desired_state
+        attr_reader :current_state
+
+        def initialize(desired_state, current_state)
+          @desired_state = desired_state
+          @current_state = current_state
+        end
+      end
+
+      class InvalidServerStateException < InvalidStateException
+        def to_s
+          "Server should have transitioned to '#{desired_state}' not '#{current_state}'"
+        end
+      end
+
     end
   end
 end

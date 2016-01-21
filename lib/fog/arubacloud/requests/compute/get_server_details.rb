@@ -27,7 +27,7 @@ module Fog
           time = Benchmark.realtime {
             response = request(options)
           }
-          puts "GetServerDetails time: #{time}"
+          Fog::Logger.debug("GetServerDetails time: #{time}")
           if response['Success']
             response
           else

@@ -28,7 +28,7 @@ module Fog
           time = Benchmark.realtime {
             response = request(options)
           }
-          puts "SetEnqueueReinitializeServer time: #{time}"
+          Fog::Logger.debug("SetEnqueueReinitializeServer time: #{time}")
           if response['Success']
             response
           else

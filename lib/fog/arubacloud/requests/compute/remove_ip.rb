@@ -24,7 +24,7 @@ module Fog
           time = Benchmark.realtime {
             response = request(options)
           }
-          puts "SetRemoveIpAddress time: #{time}"
+          Fog::Logger.debug("SetRemoveIpAddress time: #{time}")
           if response['Success']
             response
           else

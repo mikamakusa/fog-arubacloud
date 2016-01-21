@@ -26,7 +26,7 @@ module Fog
           time = Benchmark.realtime {
             response = request(get_servers_options)
           }
-          puts "GetPurchasedIpAddresses time: #{time}"
+          Fog::Logger.debug("GetPurchasedIpAddresses time: #{time}")
           if response['Success']
             response
           else
