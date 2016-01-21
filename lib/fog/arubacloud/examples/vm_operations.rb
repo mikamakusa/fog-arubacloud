@@ -27,9 +27,13 @@ service = Fog::Compute.new({
 servers = service.servers
 
 # Poweroff all vm in a datacenter
-#servers.each do |s|
-#  s.power_off
-#end
+servers.each do |s|
+  begin
+    s.power_off
+  rescue
+    next
+  end
+end
 
 # Delete all vm in a datacenter
 servers.each do |s|

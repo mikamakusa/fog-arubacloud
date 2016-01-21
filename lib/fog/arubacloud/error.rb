@@ -19,6 +19,13 @@ module Fog
         end
       end
 
+      class BadObjectType < Error
+        def initialize(message='BadObjectType', expected=nil, received=nil)
+          @expected = expected
+          @received = received
+          super(message)
+        end
+      end
       class NotFound < Error
 
       end
