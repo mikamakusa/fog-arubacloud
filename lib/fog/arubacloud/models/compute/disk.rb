@@ -32,6 +32,7 @@ module Fog
           create
         end
 
+        # Return an hash representation of the object in order to be used in json request
         def get_hash
           requires :size, :virtual_disk_type
           {

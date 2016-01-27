@@ -32,7 +32,7 @@ module Fog
         def get(server_id)
           data = service.get_server_details(server_id)
           objects = data['Value']
-          msg = "Fog::Compute::ArubaCloud::Servers.get 'objects' must be an hash, actually is: #{objects.class} #{objects.inspect}"
+          msg = "Fog::Compute::ArubaCloud::Servers.get 'objects' must be an hash, actually is: #{objects.class} #{objects.to_yaml}"
           Fog::Logger.debug(msg)
           raise Fog::ArubaCloud::Errors::BadObjectType.new("#{msg}") unless objects.instance_of? Hash
           new(objects)

@@ -53,6 +53,13 @@ module Fog
           super
         end
 
+        # Is server in ready state
+        # @param [String] ready_state By default state is RUNNING
+        # @return [Boolean] return true if server is in ready state
+        def ready?(ready_state=RUNNING)
+          state == ready_state
+        end
+
         def save
           if persisted?
             update
@@ -83,6 +90,7 @@ module Fog
             merge_attributes(server)
           else
             Fog::Logger.warning('Fog::Compute::ArubaCloud::Server.create, error during attribute merging, server object is probably nil!')
+            Fog::Logger.warning(server.inspect)
           end
         end
 
@@ -121,13 +129,6 @@ module Fog
           state == STOPPED ? service.reinitialize_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
               "Cannot reinitialize vm in current state: #{state}"
           ))
-        end
-
-        # Is server in ready state
-        # @param [String] ready_state By default state is RUNNING
-        # @return [Boolean] return true if server is in ready state
-        def ready?(ready_state=RUNNING)
-          state == ready_state
         end
 
       end

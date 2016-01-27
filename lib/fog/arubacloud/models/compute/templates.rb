@@ -18,17 +18,37 @@ module Fog
         # Returns list of Template
         # @return [Fog::Compute::ArubaCloud::Template] Retrieves the complete Templates list.
         # @raise [Fog::Compute::ArubaCloud::NotFound]
-        # @note The filter parameter on the method is just to maintain compatibility with other providers that support
-        #       filtering.
-        def all(filters = [])
+        def all
           data = service.get_hypervisors
-          objects = data["Value"]
+          objects = data['Value']
           manipulated_objects = Array.new
           objects.each do |h|
             hv_type = h['HypervisorType']
             h['Templates'].each do |t|
               t.merge!({'hypervisor' => hv_type})
               manipulated_objects << t
+            end
+          end
+          load(manipulated_objects)
+        end
+
+        # Return only templates assigned to a specific service, default is smart (4)
+        # @param hv [Int] The ID of the hypervisor
+        # @return [Fog::Compute::ArubaCloud::Template] List of templates
+        # @raise [Fog::Compute::ArubaCloud::NotFound]
+        def get_hypervisor(hv=4)
+          manipulated_objects = Array.new
+          data = service.get_hypervisors
+          objects = data['Value']
+          objects.each do |h|
+            hv_type = h['HypervisorType']
+            h['Templates'].each do |t|
+              # select{|f| f['HypervisorType'].eql?(hv)}
+              t.merge!({'hypervisor' => hv_type})
+              if t['hypervisor'].eql?(4)
+                Fog::Logger.debug("Fog::Compute::ArubaCloud::Templates.get_hypervisors: t: #{h.to_yaml}")
+                manipulated_objects << t
+              end
             end
           end
           load(manipulated_objects)
