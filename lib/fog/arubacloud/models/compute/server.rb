@@ -60,6 +60,20 @@ module Fog
           state == ready_state
         end
 
+        # Is server in stopped state
+        # @param [String] stopped_state By default stopped state is STOPPED
+        # @return [Boolean] return true if server is in stopped state
+        def stopped?(stopped_state=STOPPED)
+          state == stopped_state
+        end
+
+        # Is server in creating state
+        # @param [String] creating_state By default creating state is CREATING
+        # @return [Boolean] return true if server is in creating state
+        def creating?(creating_state=CREATING)
+          state == creating_state
+        end
+
         def save
           if persisted?
             update
