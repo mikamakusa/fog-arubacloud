@@ -98,13 +98,20 @@ module Fog
 
           # Retrieve new server list and filter the current virtual machine
           # in order to retrieve the ID
-          server = service.get_servers.fetch('Value').select {|v| v.values_at('Name').include?(data[:name])}.first
-          Fog::Logger.debug("Fog::Compute::ArubaCloud::Server.create, server: #{server.inspect}")
-          if server
-            merge_attributes(server)
-          else
-            Fog::Logger.warning('Fog::Compute::ArubaCloud::Server.create, error during attribute merging, server object is probably nil!')
-            Fog::Logger.warning(server.inspect)
+          # In case of failure, I will try it 3 for 3 times
+          try = 0
+          while server.is? nil && try <= 3
+            server = service.get_servers.fetch('Value').select {|v| v.values_at('Name').include?(data[:name])}.first
+            Fog::Logger.debug("Fog::Compute::ArubaCloud::Server.create, server: #{server.inspect}")
+            if server
+              merge_attributes(server)
+            else
+              message = "error during attribute merge, `server` object is not ready, try n.#{try}"
+              Fog::Logger.warning("Fog::Compute::ArubaCloud::Server.create, #{message}")
+              Fog::Logger.warning(server.inspect)
+              sleep(1)
+            end
+            try += 1
           end
         end
 

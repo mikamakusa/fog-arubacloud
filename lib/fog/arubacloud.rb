@@ -27,6 +27,5 @@ module Fog
     DEFAULT_WS_ENDUSER_URL = "https://api.dc2.computing.cloud.it/WsEndUser/v#{DEFAULT_API_VERSION}/WsEndUser.svc/json"
 
     service(:compute, 'Compute')
-
   end
 end
