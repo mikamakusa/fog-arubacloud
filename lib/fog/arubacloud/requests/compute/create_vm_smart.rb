@@ -49,7 +49,8 @@ module Fog
           if response['Success']
             response
           else
-            raise Fog::ArubaCloud::Errors::RequestError.new("Error during the VM creation. Object: \n#{body}\nError: \n#{response}")
+            raise Fog::ArubaCloud::Errors::RequestError.new("Error during the VM creation. Object: \n#{body}",
+                                                            response=response)
           end
         end
       end

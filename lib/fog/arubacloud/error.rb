@@ -29,7 +29,8 @@ module Fog
 
       # This class will contains the response object in order to access the ResultCode easily.
       class RequestError < Fog::Errors::Error
-        attr_accessor :type, :error_point
+        attr_accessor :type, :error_point, :response
+
         def initialize(message, response=nil, type='n/a', error_point=nil)
           @type = type
           @error_point = error_point

@@ -26,23 +26,31 @@ service = Fog::Compute.new({
 
 servers = service.servers
 
-# Poweroff all vm in a datacenter
+# Poweroff and delete every VM in a Datacenter
 servers.each do |s|
+  puts("Powering Off and Deleting VM: #{s.name}...")
+  next if s.state == Fog::Compute::ArubaCloud::Server::CREATING
+  s.power_off unless s.stopped?
+  until s.stopped?
+    s.get_server_details
+    puts(" --- Waiting for VM: #{s.name} to power off...")
+  end
   begin
-    s.power_off
+    puts(' --- Enqueued Server Deletion')
+    s.delete
   rescue
     next
   end
 end
 
 # Delete all vm in a datacenter
-servers.each do |s|
-  begin
-    s.delete
-  rescue
-    next
-  end
-end
+#servers.each do |s|
+#  begin
+#    s.delete
+#  rescue
+#    next
+#  end
+#end
 
 # Release all unassociated IP
 # ips = service.ips

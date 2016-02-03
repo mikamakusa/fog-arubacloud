@@ -100,15 +100,22 @@ module Fog
           # in order to retrieve the ID
           # In case of failure, I will try it 3 for 3 times
           try = 0
-          while server.is? nil && try <= 3
-            server = service.get_servers.fetch('Value').select {|v| v.values_at('Name').include?(data[:name])}.first
-            Fog::Logger.debug("Fog::Compute::ArubaCloud::Server.create, server: #{server.inspect}")
+          server = nil
+          while server.nil? && try <= 3
+            servers = service.get_servers
+            #server = servers['Value'].select { |v| v['Name'].include?(data[:name]) }.first
+            servers['Value'].each do |s|
+              if s['Name'].to_s.include? data[:name].to_s
+                server = s
+              end
+            end
+            Fog::Logger.debug("Fog::Compute::ArubaCloud::Server.create, #{data[:name]} server: #{server.inspect}")
             if server
               merge_attributes(server)
             else
               message = "error during attribute merge, `server` object is not ready, try n.#{try}"
               Fog::Logger.warning("Fog::Compute::ArubaCloud::Server.create, #{message}")
-              Fog::Logger.warning(server.inspect)
+              Fog::Logger.warning(servers.inspect.to_yaml)
               sleep(1)
             end
             try += 1
