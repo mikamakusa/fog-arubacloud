@@ -129,6 +129,24 @@ module Fog
           merge_attributes(new_attributes)
         end
 
+        def get_public_ip
+          requires :id
+          if self.vm_type.eql? 'smart'
+            self.smart_ipv4
+          else
+            self.get_server_details unless self.attributes['NetworkAdapters']
+            self.attributes['NetworkAdapters'].each do |na|
+              na['IPAddresses'].each do |ipa|
+                if ipa['ProductId'].eql? 20
+                  self.ipv4_addr = ipa['Value'].to_s
+                  return self.ipv4_addr
+                end
+              end
+            end
+          end
+
+        end
+
         def power_off
           requires :id, :state
           unless state.eql? RUNNING

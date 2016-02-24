@@ -10,6 +10,13 @@ require 'fog/arubacloud/service'
 module Fog
   module Compute
     class ArubaCloud < Fog::Service
+
+      # Define global constant to enumerate service type (We will need them in Vagrant :P)
+      PRO_HV    = 1
+      PRO_VMW   = 2
+      PRO_HV_LC = 3
+      SMART     = 4
+
       recognizes :url
       requires :arubacloud_username, :arubacloud_password
 

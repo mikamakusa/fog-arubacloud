@@ -25,6 +25,7 @@ service = Fog::Compute.new({
 servers = service.servers
 servers.all.each do |server|
   server.get_server_details
+  server.get_public_ip
   puts server.id
   puts server.name
 end
