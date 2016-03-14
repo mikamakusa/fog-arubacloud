@@ -38,7 +38,7 @@ module Fog
           options = {
               :http_method => :post,
               :method => 'SetEnqueueServerCreation',
-              :body => Fog::JSON.encode(body)
+              :body => Fog::JSON.encode(body),
           }
 
           response = nil

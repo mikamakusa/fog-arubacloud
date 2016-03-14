@@ -75,6 +75,10 @@ module Fog
         end
       end
 
+      class RequestTimeOut < Error
+
+      end
+
     end
   end
 end

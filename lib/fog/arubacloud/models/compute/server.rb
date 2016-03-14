@@ -39,6 +39,8 @@ module Fog
         attribute :template_id, :aliases => 'OSTemplateId'
         attribute :template_description, :aliases => 'OSTemplate', :squash => :Description
 
+        #has_many :network_adapters, :network_adapters, aliases: 'NetworkAdapters'
+
         ignore_attributes :CompanyId, :Parameters, :VirtualDVDs, :RenewDateSmart, :Note, :CreationDate,
                           :ControlToolActivationDate, :ControlToolInstalled, :UserId, :ScheduledOperations, :Snapshots,
                           :ActiveJobs

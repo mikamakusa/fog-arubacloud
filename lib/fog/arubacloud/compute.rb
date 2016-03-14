@@ -30,6 +30,8 @@ module Fog
       model      :template
       collection :disks
       model      :disk
+      collection :network_adapters
+      model      :network_adapter
 
       # Requests
       request_path 'fog/arubacloud/requests/compute'

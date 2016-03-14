@@ -25,12 +25,18 @@ module Fog
         unless options[:body].nil?
           params[:body] = options[:body]
         end
+        params[:read_timeout] = 360
 
         # initialize connection object
         @connection = Fog::Core::Connection.new(@request_url, false, params)
 
         # send request
-        response = @connection.request(:method => http_method)
+        begin
+          response = @connection.request(:method => http_method)
+        rescue Excon::Errors::Timeout
+          # raise an error
+          raise Fog::ArubaCloud::Errors::RequestTimeOut.new("Request timed out after: #{60 unless params[:read_timeout]}")
+        end
 
         # decode the response and return it
         Fog::JSON.decode(response.body)
