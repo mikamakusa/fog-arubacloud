@@ -20,7 +20,7 @@ module Fog
           end
           body = self.body('SetEnqueueServerArchiviation').merge(
               {
-                  :Snapshot => {
+                  :SetEnqueueServerArchiviation => {
                       :ServerId => id
                   }
               }

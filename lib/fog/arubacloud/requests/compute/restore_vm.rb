@@ -20,7 +20,7 @@ module Fog
           end
           body = self.body('SetEnqueueServerRestore').merge(
               {
-                  :Snapshot => {
+                  :ServerRestore  => {
                       :ServerId => id,
                       :CPUQuantity  => cpu,
                       :RAMQuantity => memory
