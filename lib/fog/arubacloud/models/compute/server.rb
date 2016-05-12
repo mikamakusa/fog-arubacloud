@@ -181,16 +181,35 @@ module Fog
 
         def archive
           requires :id, :state, :vm_type
-          state == STOPPED and vm_type == 'pro' ? service.archive_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
+          state == STOPPED and vm_type.eql? 'pro' ? service.archive_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
               "Cannot archive VM in current state #{state} or VM type #{vm_type}"
           ))
         end
 
         def restore
           requires :id, :memory, :cpu
-          state == ARCHIVED and memory != nil and cpu != nil ? service.restor_vm(id) : raise(Fog::ArubaCloud::Errors::VMStatus.new(
+          state == ARCHIVED and memory != nil and cpu != nil ? service.restore_vm(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
               "Cannot restore VM without specifying #{cpu} and #{memory}"
                                                             ))
+        end
+
+        def create_snapshot
+          requires :id
+          id != nil ? service.create_snapshot(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
+              "Cannot crate snapshot without vm id"
+                                                          ))
+        end
+
+        def apply_snapshot
+          requires :id
+          state == STOPPED ? service.apply_snapshot(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
+              "Cannot restore snapshot in current vm state #{state}"
+                                                                  ))
+        end
+
+        def delete_snapshot
+          requires :id
+          service.delete_snapshot(id)
         end
 
       end
