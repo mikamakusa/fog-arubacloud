@@ -32,6 +32,8 @@ module Fog
       model      :disk
       collection :network_adapters
       model      :network_adapter
+      collection :snapshots
+      model      :snapshot
 
       # Requests
       request_path 'fog/arubacloud/requests/compute'
@@ -47,6 +49,11 @@ module Fog
       request :get_purchased_ip_addresses
       request :get_hypervisors
       request :reinitialize_vm
+      request :create_snapshot
+      request :apply_snapshot
+      request :delete_snapshot
+      request :archive_vm
+      request :restore_vm
 
       # Mock class to run a fake instance of the Service with no real connections.
       class Mock < Fog::ArubaCloud::Service
