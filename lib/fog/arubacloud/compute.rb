@@ -62,6 +62,7 @@ module Fog
       request :suspend_scheduled_operations
       request :delete_scheduled_operation
       request :create_scheduled_operation
+      request :create_scheduled_occurence
 
       # Mock class to run a fake instance of the Service with no real connections.
       class Mock < Fog::ArubaCloud::Service

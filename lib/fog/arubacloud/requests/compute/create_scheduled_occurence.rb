@@ -14,16 +14,36 @@ module Fog
   module Compute
     class ArubaCloud
       class Real
-        def create_scheduled_operation(data)
+        def create_scheduled_occurence(data)
           body = self.body('SetAddServerScheduledOperation').merge(
               :NewSchedulePlan => {
                   :FirstExecutionTime => data[:dateStart],
                   :LastExecutionTime => data[:endDate],
                   :OperationType => data[:OperationType],
                   :ServerID => data[:ServerId],
-                  :ScheduledPlanStatus => 'Enabled'
               }
           )
+          if data[:frequencyType].include? 'Monthly'
+            body[:NewSchedulePlan] << {
+                :ScheduleDaysOfMonth => [{
+                    :int => data[:daysOfMonth]
+                                               }]
+            }
+          elsif data[:frequencyType].include? 'MonthlyRelative'
+            body[:NewSchedulePlan] << {
+                :ScheduledMontlyRecurrence => data[:monthlyRecurrence]
+            }
+          elsif data[:frequencyType].include? 'Weekly'
+            body[:NewSchedulePlan] << {
+                :ScheduleWeekDays => [{
+                    :ScheduleWeekDays => data[:daysOfWeek]
+                                      }]
+            }
+          elsif data[:frequencyType].include? 'Daily' or 'Hourly'
+            body[:NewSchedulePlan] << {
+                :ScheduleFrequencyType => data[:frequency]
+            }
+          end # Monhtly
           options = {
               :http_method => :post,
               :method => 'SetAddServerScheduledOperation',
@@ -40,13 +60,13 @@ module Fog
           else
             raise Fog::ArubaCloud::Errors::RequestError.new("Error during the Scheduled Operation creation.")
           end
-        end # create_scheduled_operation
+        end # create_scheduled_occurence
         class Mock
-          def create_scheduled_operation
+          def create_scheduled_occurence
             raise Fog::Errors::MockNotImplemented.new(
                       'Mock not implemented. Feel free to contribute.'
                   )
-          end # create_scheduled_operation
+          end # create_scheduled_occurence
         end # Mock
       end # Real
     end # ArubaCloud
