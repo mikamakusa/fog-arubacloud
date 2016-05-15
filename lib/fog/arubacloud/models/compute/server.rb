@@ -196,7 +196,7 @@ module Fog
         def create_snapshot
           requires :id
           id != nil ? service.create_snapshot(id) : raise(Fog::ArubaCloud::Errors::VmStatus.new(
-              "Cannot crate snapshot without vm id"
+              'Cannot crate snapshot without vm id'
                                                           ))
         end
 
@@ -211,6 +211,61 @@ module Fog
           requires :id
           service.delete_snapshot(id)
         end
+
+        def create_loadbalancer
+          requires :name, :rules, :ipaddressesresourceid
+          service.create_loadbalancer(name, rules, ipaddressesresourceid)
+        end # create_loadbalancer
+
+        def get_loadbalancer
+          requires :id
+          service.get_loadbalancer(id)
+        end # get_loadbalancer
+
+        def modify_loadbalancer
+          requires :id, :name, :healthchecknotification
+          service.modify_loadbalancer(id, name, healthchecknotification)
+        end # modify_loadbalancer
+
+        def get_lb_stats
+          requires :id, :starttime, :endtime
+          service.get_lb_stats(id, starttime, endtime)
+        end # get_lb_stats
+
+        def get_lb_loads
+          requires :id, :starttime, :endtime
+          service.get_lb_loads(id, starttime, endtime)
+        end # get_lb_loads
+
+        def add_lb_rule
+          requires :id, :newrule
+          service.add_lb_rule(id, newrule)
+        end # add_lb_rule
+
+        def remove_instance
+          requires :id, :ipaddress
+          service.remove_instance(id, ipaddress)
+        end # remove_instance
+
+        def add_instance
+          requires :id, :ipaddress
+          service.add_instance(id, ipaddress)
+        end # add_instance
+
+        def get_notifications
+          requires :id, :starttime, :endtime, :ruleid
+          service.get_notifications(id, starttime, endtime, ruleid)
+        end # get_notifications
+
+        def add_contact
+          requires :id, :notificationcontacts
+          service.add_contact(id, notificationcontacts)
+        end # add contact
+
+        def remove_contact
+          requires :id, :contactid
+          service.remove_contact(id, contactid)
+        end # remove contact
 
       end
     end

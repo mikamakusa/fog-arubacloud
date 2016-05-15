@@ -38,6 +38,8 @@ module Fog
       model      :archive
       collection :schedules
       model      :schedule
+      collection :loadbalancers
+      model      :loadbalancer
 
       # Requests
       request_path 'fog/arubacloud/requests/compute'
@@ -63,6 +65,17 @@ module Fog
       request :delete_scheduled_operation
       request :create_scheduled_operation
       request :create_scheduled_occurence
+      request :create_loadbalancer
+      request :get_loadbalancer
+      request :modify_loadbalancer
+      request :get_lb_stats
+      request :get_lb_loads
+      request :add_lb_rule
+      request :remove_instance
+      request :add_instance
+      request :get_notifications
+      request :add_contact
+      request :remove_contact
 
       # Mock class to run a fake instance of the Service with no real connections.
       class Mock < Fog::ArubaCloud::Service
