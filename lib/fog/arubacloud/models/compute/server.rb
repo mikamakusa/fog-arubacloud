@@ -214,8 +214,13 @@ module Fog
 
         def create_loadbalancer
           requires :name, :rules, :ipaddressesresourceid
-          service.create_loadbalancer(name, rules, ipaddressesresourceid)
+          service.create_loadbalancer(name, ipaddressesresourceid, balancetype, certificate, creationdate, ruleid, instanceport, loadbalancerport, protocol, contactvalue, loadbalancercontactid, type)
         end # create_loadbalancer
+
+        def remove_loadbalancer
+          requires :id
+          service.remove_loadbalancer(id)
+        end # remove_loadbalancer
 
         def get_loadbalancer
           requires :id
@@ -266,6 +271,16 @@ module Fog
           requires :id, :contactid
           service.remove_contact(id, contactid)
         end # remove contact
+
+        def enable_loadbalancer
+          requires :id
+          service.enable_loadbalancer(id)
+        end
+
+        def disable_loadbalancer
+          requires :id
+          service.disable_loadbalancer(:id)
+        end
 
       end
     end

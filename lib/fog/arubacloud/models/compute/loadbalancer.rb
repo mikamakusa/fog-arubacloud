@@ -15,18 +15,27 @@ module Fog
         identity :id, :aliases => 'id'
 
         attribute :name, :aliases => 'name'
-        attribute :rules, :aliases => 'rules'
+        #attribute :rules, :aliases => 'rules'
         attribute :starttime, :aliases => 'starttime'
         attribute :endtime, :aliases => 'endtime'
         attribute :ipaddress, :aliases => 'ipaddress'
         attribute :notificationcontacts, :aliases => 'notificationcontacts'
+        attribute :contactvalue, :aliases => 'ContactValue'
+        attribute :loadbalancercontactid, :aliases => 'LoadBalancerContactID'
+        attribute :type, :aliases => 'type'
         attribute :contactid, :aliases => 'contactid'
         attribute :ipaddressesresourceid, :aliases => 'ipaddressesresourceid'
         attribute :healthchecknotification, :aliases => 'healthchecknotification'
         attribute :newrule, :aliases => 'newrule'
         attribute :ruleid, :aliases => 'ruleid'
+        attribute :balancetype, :aliases => 'balancetype'
+        attribute :certificate, :aliases => 'certificate'
+        attribute :creationdate, :aliases => 'creationdate'
+        attribute :instanceport, :aliases => 'instanceport'
+        attribute :loadbalancerport, :aliases => 'loadbalancerport'
+        attribute :protocol, :aliases => 'protocol'
 
-        ignore_attributes :loadbalancerclassofserviceid
+        ignore_attributes :loadbalancerclassofserviceid, :rules
 
         def initialize(attributes = {})
           @service = attributes[:service]
@@ -34,10 +43,16 @@ module Fog
         end # initialize
 
         def create_loadbalancer
-          requires :name, :rules, :ipaddressesresourceid
+          requires :name, :ipaddressesresourceid, :balancetype, :certificate, :creationdate, :ruleid, :instanceport, :loadbalancerport, :protocol, :contactvalue, :loadbalancercontactid, :type
           data = attributes
           service.create_loadbalancer(data)
         end # create
+
+        def remove_loadbalancer
+          requires :id
+          data = attributes
+          service.remove_loadbalancer(data)
+        end # remove
 
         def get_loadbalancer
           requires :id
@@ -105,6 +120,12 @@ module Fog
           data = attributes
           service.remove_contact(data)
         end # remove contact
+
+        def enable_loadbalancer
+          requires :id
+          data = attributes
+          service.enable_loadbalancer(data)
+        end
 
       end # LoadBalancer
     end # ArubaCloud

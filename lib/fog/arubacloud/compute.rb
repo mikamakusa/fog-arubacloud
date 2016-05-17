@@ -66,8 +66,11 @@ module Fog
       request :create_scheduled_operation
       request :create_scheduled_occurence
       request :create_loadbalancer
+      request :remove_loadbalancer
       request :get_loadbalancer
       request :modify_loadbalancer
+      request :enable_loadbalancer
+      request :disable_loadbalancer
       request :get_lb_stats
       request :get_lb_loads
       request :add_lb_rule

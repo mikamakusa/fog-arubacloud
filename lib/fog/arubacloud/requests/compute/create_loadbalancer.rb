@@ -17,9 +17,31 @@ module Fog
         def create_loadbalancer(data)
           body = self.body('SetEnqueueLoadBalancerCreation').merge(
                 :LoadBalancerCreationRequest => {
-                    :name => data[:name],
-                    :rules => data[:rules],
-                    :ipAddressesResourceId => data[:ipaddressesresourceid]
+                    :HealthCheckNotification => data[:healthchecknotification],
+                    :Name => data[:name],
+                    :rules => [
+                        :LoadBalancerRule => [
+                            {
+                                :BalanceType => data[:balancetype],
+                                :Certificate => data[:certificate],
+                                :CreationDate => data[:creationdate],
+                                :ID => data[:id],
+                                :InstancePort => data[:instanceport],
+                                :LoadBalancerPort => data[:loadbalancerport],
+                                :Protocol => data[:protocol]
+                            }
+                        ]
+                    ],
+                    :ipAddressesResourceId => data[:ipaddressesresourceid],
+                    :NotificationContacts => [
+                        :NotificationContact => [
+                            {
+                                :ContactValue => data[:contacvalue],
+                                :LoadBalancerContactID => data[:loadbalancercontactid],
+                                :Type => data[:type]
+                            }
+                        ]
+                    ]
                 }
           )
           options = {
